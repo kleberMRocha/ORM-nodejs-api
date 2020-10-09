@@ -1,0 +1,35 @@
+{
+  "name": "orm_com_nodejs",
+  "version": "1.0.0",
+  "description": "API com Sequelize e MySQL",
+  "main": "./api/index.js",
+  "scripts": {
+    "start": "nodemon ./api/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kleberMRocha/orm-nodejs-api.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "kleber",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kleberMRocha/orm-nodejs-api/issues"
+  },
+  "homepage": "https://github.com/kleberMRocha/orm-nodejs-api#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5",
+    "path": "^0.12.7",
+    "sequelize": "^6.3.5",
+    "sequelize-cli": "^6.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
