@@ -1,14 +1,27 @@
 const database = require("../models");
+const {Op} = require('sequelize');
 
 class TurmaController {
+
   static async GetTurma(req, res) {
+    const {data_inicio,data_final} = req.query;
+
     try {
-      const turma = await database.Turma.findAll();
+      const turma = await database.Turma
+      .findAll(
+        data_inicio && data_final &&{
+        where:{data_inicio:{
+          [Op.between]:[data_inicio,data_final]
+        }
+      }});
+
       return res.status(200).json(turma);
     } catch (err) {
       return res.status(200).json(err.message);
     }
+
   }
+
   static async GetUmaTurma(req, res) {
     const { id } = req.params;
 

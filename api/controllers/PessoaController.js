@@ -1,9 +1,17 @@
 const database = require("../models");
 
 class PessoaController {
-  static async GetPessoas(req, res) {
+  static async GetPessoasAtivas(req, res) {
     try {
       const pessoas = await database.Pessoas.findAll();
+      return res.status(200).json(pessoas);
+    } catch (err) {
+      return res.status(200).json(err.message);
+    }
+  }
+  static async GetPessoas(req, res) {
+    try {
+      const pessoas = await database.Pessoas.scope('todos').findAll();
       return res.status(200).json(pessoas);
     } catch (err) {
       return res.status(200).json(err.message);
@@ -50,6 +58,19 @@ class PessoaController {
     } catch (err) {
       res.status(500).json(err.message);
     }
+  }
+  static async restauraPessoa(req,res){
+    const {id} = req.params;
+    try {
+
+      await database.Pessoas.restore({where:{id:Number(id)}})
+      return res.status(200).json({message:'Pessoa Restaurada'})
+      
+    } catch (error) {
+      res.status(500).json(error.message);
+      
+    }
+
   }
   //matriculas
   static async GetMatricula(req, res) {
@@ -109,6 +130,21 @@ class PessoaController {
         },
       });
       return res.status(200).json({ message: "Dados Deletados com sucesso!" });
+    } catch (err) {
+      res.status(500).json(err.message);
+    }
+  }
+  static async GetMatriculasAtivas(req, res) {
+    const { id  } = req.params;
+
+    try {
+      const matricula = await database.Matricula.findAll({
+        where: {
+          estudante_id: Number(id),
+          status:'confirmado'
+        },
+      });
+      return res.status(200).json(matricula);
     } catch (err) {
       res.status(500).json(err.message);
     }
