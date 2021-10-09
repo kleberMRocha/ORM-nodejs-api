@@ -6,7 +6,7 @@ class PessoaController {
       const pessoas = await database.Pessoas.findAll();
       return res.status(200).json(pessoas);
     } catch (err) {
-      return res.status(200).json(err.message);
+      return res.status(500).json(err.message);
     }
   }
   static async GetPessoas(req, res) {
@@ -14,7 +14,7 @@ class PessoaController {
       const pessoas = await database.Pessoas.scope('todos').findAll();
       return res.status(200).json(pessoas);
     } catch (err) {
-      return res.status(200).json(err.message);
+      return res.status(500).json(err.message);
     }
   }
   static async GetUmaPessoa(req, res) {
@@ -59,16 +59,16 @@ class PessoaController {
       res.status(500).json(err.message);
     }
   }
-  static async restauraPessoa(req,res){
-    const {id} = req.params;
+  static async restauraPessoa(req, res) {
+    const { id } = req.params;
     try {
 
-      await database.Pessoas.restore({where:{id:Number(id)}})
-      return res.status(200).json({message:'Pessoa Restaurada'})
-      
+      await database.Pessoas.restore({ where: { id: Number(id) } })
+      return res.status(200).json({ message: 'Pessoa Restaurada' })
+
     } catch (error) {
       res.status(500).json(error.message);
-      
+
     }
 
   }
@@ -90,8 +90,8 @@ class PessoaController {
   }
   static async CreateMatricula(req, res) {
     try {
-      const {id} = req.params;
-      const novaMatricula = {...req.body,estudante_id:Number(id)};
+      const { id } = req.params;
+      const novaMatricula = { ...req.body, estudante_id: Number(id) };
 
       const resultado = await database.Matricula.create(novaMatricula);
       return res.status(200).json(resultado);
@@ -101,29 +101,29 @@ class PessoaController {
     }
   }
   static async updateMatricula(req, res) {
-    const {id,matriculaId} = req.params;
+    const { id, matriculaId } = req.params;
     const updateMatricula = req.body;
 
     console.log(updateMatricula);
 
     try {
-      database.Matricula.update(updateMatricula, { 
+      database.Matricula.update(updateMatricula, {
         where: {
           id: Number(matriculaId),
           estudante_id: Number(id),
         },
       });
       return res.status(200)
-      .json(updateMatricula);
+        .json(updateMatricula);
     } catch (err) {
       res.status(500).json(err.message);
     }
   }
   static async DeleteMatricula(req, res) {
-    const { id,matriculaId } = req.params;
+    const { id, matriculaId } = req.params;
 
     try {
-      await database.Matricula.destroy({ 
+      await database.Matricula.destroy({
         where: {
           id: Number(matriculaId),
           estudante_id: Number(id),
@@ -135,13 +135,13 @@ class PessoaController {
     }
   }
   static async GetMatriculasAtivas(req, res) {
-    const { id  } = req.params;
+    const { id } = req.params;
 
     try {
       const matricula = await database.Matricula.findAll({
         where: {
           estudante_id: Number(id),
-          status:'confirmado'
+          status: 'confirmado'
         },
       });
       return res.status(200).json(matricula);
